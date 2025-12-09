@@ -1,0 +1,16 @@
+FROM apache/airflow:2.7.1
+
+USER root
+
+# 1. Install OpenJDK-17 (Required for Spark)
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jre-headless procps && \
+    apt-get clean
+
+# 2. Set JAVA_HOME environment variable
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+USER airflow
+
+# 3. Install PySpark and dependencies
+RUN pip install --no-cache-dir pyspark==3.5.3 pandas requests boto3

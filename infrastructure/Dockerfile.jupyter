@@ -1,0 +1,35 @@
+FROM public.ecr.aws/bitnami/spark:3.5.3
+
+USER root
+
+# Install system dependencies (for building some python pkgs)
+RUN apt-get update && \
+    apt-get install -y build-essential curl && \
+    apt-get clean
+
+# Install JupyterLab and project deps
+# We use the system pip provided by the image (Python 3.12)
+RUN pip install --no-cache-dir \
+    jupyterlab \
+    pandas \
+    requests \
+    boto3 \
+    s3fs \
+    ipykernel
+
+# Setup workspace
+WORKDIR /opt/bitnami/spark/work
+RUN chown -R 1001:1001 /opt/bitnami/spark/work
+
+# Switch back to non-root user (Bitnami default is 1001)
+USER 1001
+
+# Set enviroment variables for Jupyter
+ENV JUPYTER_TOKEN=admin
+ENV SHELL=/bin/bash
+
+# Expose Jupyter Port
+EXPOSE 8888
+
+# Run Jupyter Lab
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=admin"]
