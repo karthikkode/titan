@@ -1,0 +1,13 @@
+# Titan Historical ETL - Coins Configuration
+# 
+# Add one symbol per line. Lines starting with # are ignored.
+# Format: SYMBOL (e.g., BTCUSDT, ETHUSDT)
+#
+# These are Binance trading pair symbols.
+# Data will be extracted and loaded for each symbol listed below.
+
+BTCUSDT
+# ETHUSDT
+# BNBUSDT
+# SOLUSDT
+# XRPUSDT
